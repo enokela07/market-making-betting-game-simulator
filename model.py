@@ -16,8 +16,34 @@ def expected_value(values, probabilities):
     return ev
     pass
 
-# Step 2 - one_reroll_die_value (not yet solved)
-# TODO: implement
+# Step 2 - one_reroll_die_value
+def one_reroll_die_value(sides):
+    prob = 1/sides
+    values = [i+1 for i in range(sides)]
+    probabilities = [prob for i in range(sides)]
+    mid = expected_value(values, probabilities)
+
+    reroll_faces = []
+    reroll_ev = []
+
+    for value in values:
+        if value < mid:
+            reroll_faces.append(value)
+            reroll_ev.append(mid)
+
+        else:
+            reroll_ev.append(value)
+
+    final_ev = expected_value(reroll_ev, probabilities)
+
+    result = {}
+
+    result['value'] = final_ev
+    result['reroll_faces'] = reroll_faces
+
+    return result
+
+    pass
 
 # Step 3 - pay_per_reroll_die_game (not yet solved)
 # TODO: implement
