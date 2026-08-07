@@ -150,8 +150,20 @@ def mark_to_market_pnl(cash, inventory, settlement_value):
     return cash + inventory*settlement_value
     pass
 
-# Step 8 - adverse_selection_loss (not yet solved)
-# TODO: implement
+# Step 8 - adverse_selection_loss
+import numpy as np
+
+def adverse_selection_loss(fair_value, bid, ask, informed_values, informed_probabilities):
+    # TODO: expected loss = E[(v-ask)*1{v>ask}] + E[(bid-v)*1{v<bid}] over informed_values.
+    l = 0
+    for i in range(len(informed_values)):
+        prob = informed_probabilities[i]
+        val = informed_values[i]
+        l += prob*max(((val-ask), 0))
+        l += prob*max(((bid -val), 0))
+
+    return l
+    pass
 
 # Step 9 - uncertainty_spread (not yet solved)
 # TODO: implement
