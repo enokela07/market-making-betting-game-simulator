@@ -64,8 +64,53 @@ def pay_per_reroll_die_game(sides, reroll_cost):
     
     pass
 
-# Step 4 - red_black_card_game_value (not yet solved)
-# TODO: implement
+# Step 4 - red_black_card_game_value
+#helper function to recursively find V(r,b)
+def V(r ,b ):
+    if r == 0:
+        return 0
+    if b == 0:
+        return r
+    total = r+b
+    r_prob = r/total
+    b_prob = b/total
+    return max(0, r_prob*(1 + V(r-1, b))+b_prob*(-1+V(r, b-1)))
+
+
+def red_black_card_game_value(num_red, num_black):
+    # TODO: return {'value': expected payout under optimal stopping, 'stop_now': whether to stop immediately}.
+
+    if num_red == 0 and num_black == 0:
+        return {"value": 0.0, "stop_now": True}
+
+    if num_red == 0:
+        return {"value": 0.0, "stop_now": True}
+
+    if num_black == 0:
+        return {"value": float(num_red), "stop_now": False}
+
+    V_table = [[0 for i in range(num_black+1)] for i in range(num_red+1)]
+    V_table[1][0] = 1
+
+    
+    for r in range(num_red+1):
+        for b in range(num_black+1):
+            V_table[r][b] = V(r, b)
+
+    
+    
+
+    r_prob = num_red/(num_black+num_red)
+    b_prob = num_black/(num_black+num_red)
+
+    value = V_table[num_red][num_black]
+    cont = r_prob*(1 + V_table[num_red-1][num_black]) + b_prob*(-1 + V_table[num_red][num_black-1])
+    stop_now = (cont <= 0)
+
+    result = {}
+    result['value'] = value
+    result['stop_now'] = stop_now
+    return result
 
 # Step 5 - make_quotes (not yet solved)
 # TODO: implement
